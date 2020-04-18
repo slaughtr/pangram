@@ -8,7 +8,7 @@ exports.handler = event => {
     };
 
     try {
-        
+               
     } catch (error) {
         console.error(error)
         response.body = {status: 'error', errorMessage: error.message}
