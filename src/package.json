@@ -1,0 +1,13 @@
+{
+  "name": "pangram",
+  "version": "1.0.0",
+  "description": "Determine if string is pangram",
+  "main": "index.js",
+  "scripts": {
+    "test": "nyc mocha ./test --recursive --exit"
+  },
+  "author": "Dallas Slaughter",
+  "license": "ISC",
+  "dependencies": {
+  }
+}
