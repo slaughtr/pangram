@@ -14,7 +14,7 @@ const pangrams = [
     'My girl wove six dozen plaid jackets before she quit.',
     'Pack my box with five dozen liquor jugs.',
     'Six big devils from Japan quickly forgot how to waltz.',
-    'Six boys guzzled cheap raw plum vodka quite joyfully.',
+    // 'Six boys guzzled cheap raw plum vodka quite joyfully.', // this is not a pangram!
     'Sixty zippers were quickly picked from the woven jute bag.',
     'The five boxing wizards jump quickly.',
     'The lazy major was fixing Cupid’s broken quiver.',
