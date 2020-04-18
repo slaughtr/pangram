@@ -4,12 +4,12 @@
 
 
 # Plan
-- Setup repo
-- Write tests
-- Write code
-- Write Terraform
-- Deploy
-- End to end testing (Postman against HTTP API)
+- [x] Setup repo
+- [x] Write tests
+- [x] Write code
+- [ ] Write Terraform
+- [ ] Deploy
+- [ ] End to end testing (Postman against HTTP API)
 
 # Findings
 

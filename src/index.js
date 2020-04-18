@@ -1,16 +1,16 @@
-exports.handler = event => {
+exports.handler = async event => {
     const response = {
         body: {
             isPangram: false
         },
         statusCode: 503,
-        headers: { 'Access-Control-Allow-Origin': '*' }
-    };
-
-    const { queryStringParameters: { string } } = event;
-
-
+        headers: { 'Access-Control-Allow-Origin': '*' },
+        isBase64Encoded: false
+    };    
+    
     try {
+        const { queryStringParameters: { string } } = event;
+
         const checkPangram = string => {
             if (typeof string === 'string') {
                 const cleanString = string.toLowerCase().trim();
@@ -19,13 +19,15 @@ exports.handler = event => {
             }
         
             return false;
-        }       
+        }
 
+        
         response.body.isPangram = checkPangram(string);
         response.statusCode = 200;
+
     } catch (error) {
-        console.error(error)
-        response.body = {status: 'error', errorMessage: error.message}
+        console.error(error);
+        response.body = {status: 'error', errorMessage: error.message};
         response.statusCode = 503;
     }
 

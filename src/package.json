@@ -4,7 +4,8 @@
   "description": "Determine if string is pangram",
   "main": "index.js",
   "scripts": {
-    "test": "nyc mocha ./test --recursive --exit"
+    "test": "nyc mocha ./test --recursive --exit",
+    "deploy": "rm -rf node_modules && npm install --production && rm -f package-lock.json && zip -rq lambda.zip * && aws lambda update-function-code --function-name=pangram --zip-file=fileb://lambda.zip --publish --profile slaughtr && rm lambda.zip"
   },
   "author": "Dallas Slaughter",
   "license": "ISC",
