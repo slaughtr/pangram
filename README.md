@@ -32,7 +32,9 @@ Some improvements over the current architecture could be made, mostly around per
 - Currently there is some naive usage of `*` in policies. In production, these should be limited to the appropriate resources.
 - While technically "RESTful", the API will support any valid HTTP method as long as the proper query strings are provided. In a production environment, this may need to be limited to GET only, especially if further method support is desired.
 - There is no authorization on the API.
-- Better error handling with customized messaging would be desirable in productino.
+- Better error handling with customized messaging would be desirable in production.
+- Networking config.
+- Minimize/compress deployment package (including removing test directory)
 
 
 # Plan
