@@ -1,0 +1,33 @@
+name: CI PR Open/Push
+
+# Triggers on a PR open or when commit(s) add(ed)
+on:
+  pull_request:
+    types: [synchronize, opened]
+
+concurrency: staging_environment_deploy_group
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      # Workflows need to checkout the repo before they can work with it
+      # You can specify the repo to be checked out to pull in other code
+      # If you do not specify, the default is the repo the workflow runs from
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      # Github-hosted runners come with several node versions installed (and much more!)
+      # If you don't setup a specific version, the latest version is used
+      # This repo uses node 12, so let's stick to that when running the workflow
+      - name: Use Node.js 12
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      
+      # You don't have to specify a name for your steps - usually a good idea, though
+      - run: cd src && npm install
+
+      # And now we can run our tests! It's the same as we would locally
+      - name: Run tests
+        run: npm run test
