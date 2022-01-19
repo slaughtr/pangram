@@ -26,8 +26,17 @@ jobs:
           node-version: 12
       
       # You don't have to specify a name for your steps - usually a good idea, though
-      - run: cd src && npm install
+      # - run: cd src && npm install
+      
+      # Usually it's best to avoid using `cd` in favor of `working-directory`
+      - name: Install dependencies
+        # Most actions support `working-directory` - this tells the runner to execute this
+        # step in the directory we specify. Since our package.json is in src, execute there
+        working-directory: src
+        run: npm install
+        
 
       # And now we can run our tests! It's the same as we would locally
       - name: Run tests
+        working-directory: src
         run: npm run test
