@@ -46,10 +46,18 @@ jobs:
       - name: Comment on PR
         # github-script is an amazingly powerful action, check it out!
         uses: actions/github-script@v3
+        env:
+          # We can set environment variables for a step using env
+          # Here we're setting it to the output we made
+          GIT_DIFF: ${{ steps.diff.outputs.GIT_DIFF }}
         with:
           # There's our multi-line pipe again
           script: |
             // Here, we're using Javascript - neato!
+            
+            // Get our env var we set above
+            const { GIT_DIFF } = process.env
+
             // Pull requests are issues, as far as Github's APIs are concerned
             github.issues.createComment({
               // context here comes from the action itself, see:
@@ -60,6 +68,6 @@ jobs:
               body: `⚠️ package.json changed! ⚠️
                     The package.json file was changed! @slaughtr please verify changes are acceptable!
                     Changes:
-                    ${steps.diff.outputs.GIT_DIFF}
+                    ${GIT_DIFF}
                     `
             })
