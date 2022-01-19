@@ -9,10 +9,7 @@
   },
   "author": "Dallas Slaughter",
   "license": "ISC",
-  "dependencies": {
-    "is-odd": "^3.0.1",
-    "true": "^0.0.4"
-  },
+  "dependencies": {},
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^7.1.1",
