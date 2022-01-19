@@ -1,14 +1,14 @@
-name: CI PR Open/Push
+name: Run Tests on PR Open/Updated
 
 # Triggers on a PR open or when commit(s) add(ed)
 on:
   pull_request:
     types: [synchronize, opened]
 
-concurrency: staging_environment_deploy_group
-
 jobs:
   run-tests:
+    # Windows and macos are also options, as well as self-hosted runners
+    # Generally, ubuntu-latest is what you want to use
     runs-on: ubuntu-latest
     steps:
       # Workflows need to checkout the repo before they can work with it
