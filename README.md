@@ -2,7 +2,7 @@
 
 > API to determine if an input string is a pangram (contains each letter of the alphabet). Input may be mixed case, contain numbers, special characters, etc.
 
-# Usage
+## Usage
 
 In order to test, build, and deploy this, you will need the following tools and resources:
 - npm
@@ -10,12 +10,29 @@ In order to test, build, and deploy this, you will need the following tools and 
 - AWS account with sufficient permissions
 - AWS CLI
 
-### Testing
+## Testing
 
 Testing this code is done using the usual libraries - `mocha` and `chai`. I have also opted to use `nyc`, which outputs code coverage in a nice table.
 In order to run tests, you must first install the testing dependencies with `npm i` in the `src` directory. After you have installed the libraries, testing is executed by simply running `npm test`
 
-### Deploying
+## Continuous Integration / Continuous Delivery
+This repository uses [Github Actions](https://docs.github.com/en/actions) to automate CI/CD workflows. Github Actions are configured via YAML files located in a repo's `.github/workflows` directory. Github Actions can be [triggered from various different events](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows), perform virtually [any action you can imagine](https://github.com/marketplace?type=actions), and are [free for many use cases](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#about-billing-for-github-actions). They are also an increasingly popular CI/CD platform with a [growing demand on the job market](https://discovery.hgdata.com/product/github-actions). As an extra bonus, they can also [do](https://github.com/fabasoad/twilio-fax-action/) [other](https://www.swyx.io/github-scraping/) [interesting](https://github.com/marketplace/actions/hue-action) [things](https://towardsdatascience.com/automate-your-job-search-with-python-and-github-actions-1dc818844c0).
+
+Over the course of the branches in this repo, we'll look at how to use Github Actions for some common use cases - ones you may even find handy today! Each branch in the series will be numbered with only the necessary workflow included. A final branch with all workflows will be the last in the series.
+
+This branch - `talk/gha-3-scheduled-jobs` - shows how you can setup a [scheduled job](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule). The use cases here are numerous - people have used this to create COVID statistics graphs, check if a website is down, or just run usual CI/CD jobs regularly. In our case, we're going to hit the API defined within this repository once an hour.
+
+* The file `.github/workflows/ci-hourly-api-call` is our focus
+* In that file, we define a workflow `Call API Hourly`
+  * This will run the workflow every hour on the hour.
+* The workflow will call out to the API endpoint with a pangram and a non-pangram
+  * There is no output other than logs...what would be something we could do with this?
+    * We might send a Slack message if the API is down
+    * We could check the values returned to verify the API is working as expected
+    * We could commit the result outputs to our repo, creating a versioned history of API results
+  * It is _underwhelming, but useful_
+
+## Deploying
 
 Deployment of resources in this repo is done via Terraform. You must have version 0.12 or later - 0.11 is not compatible.
 To deploy the resources, first run `terraform init` from the root of the repo. You will need to provide an S3 bucket name and prefix for remote state storage, and the bucket must already exist. This will configure your environment and download the proper providers.
@@ -34,7 +51,7 @@ As I suspected, the most naive approach is by far the fastest - using `.indexOf(
 
 With this in mind, I used the `.indexOf` method for this project.
 
-### Possible Improvements
+## Possible Improvements
 
 Some improvements over the current architecture could be made, mostly around permissions. 
 - Currently there is some naive usage of `*` in policies. In production, these should be limited to the appropriate resources.
