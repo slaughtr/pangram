@@ -1,6 +1,6 @@
 aws_region = "us-west-2"
 name = "pangram"
-tags = {Name: "pangram", Use: "tech-assessment"}
+tags = {Name: "pangram", Use: "demo"}
 api_description = "API that accepts a string and returns whether or not it is a pangram"
 stage_name = "v0"
 api_path_part = "{pangram+}"

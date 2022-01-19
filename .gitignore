@@ -3,3 +3,7 @@ node_modules
 *.zip
 
 .nyc_output
+
+# This is ignored for the purposes of sharing this repo
+# In the real world/your own repo, you would want to commit this
+.terraform.lock.hcl
