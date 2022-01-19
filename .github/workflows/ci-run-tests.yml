@@ -1,0 +1,42 @@
+name: Run Tests on PR Open/Updated
+
+# Triggers on a PR open or when commit(s) add(ed)
+on:
+  pull_request:
+    types: [synchronize, opened]
+
+jobs:
+  run-tests:
+    # Windows and macos are also options, as well as self-hosted runners
+    # Generally, ubuntu-latest is what you want to use
+    runs-on: ubuntu-latest
+    steps:
+      # Workflows need to checkout the repo before they can work with it
+      # You can specify the repo to be checked out to pull in other code
+      # If you do not specify, the default is the repo the workflow runs from
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      # Github-hosted runners come with several node versions installed (and much more!)
+      # If you don't setup a specific version, the latest version is used
+      # This repo uses node 12, so let's stick to that when running the workflow
+      - name: Use Node.js 12
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12
+      
+      # You don't have to specify a name for your steps - usually a good idea, though
+      # - run: cd src && npm install
+      
+      # Usually it's best to avoid using `cd` in favor of `working-directory`
+      - name: Install dependencies
+        # Most actions support `working-directory` - this tells the runner to execute this
+        # step in the directory we specify. Since our package.json is in src, execute there
+        working-directory: src
+        run: npm install
+        
+
+      # And now we can run our tests! It's the same as we would locally
+      - name: Run tests
+        working-directory: src
+        run: npm run test
