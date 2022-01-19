@@ -21,7 +21,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
 
-      - run: git diff $GITHUB_SHA -- src/package.json
+      - run: git diff $GITHUB_REF -- src/package.json
 
       - name: Get git diff
         # To reference our output later, we need an id value
@@ -34,9 +34,9 @@ jobs:
           # If you don't understand, that's fine! I'll try to make it 
           # clear what's going on through comments
 
-          # First, we need to get our git diff - GITHUB_SHA is provided in the action
+          # First, we need to get our git diff - GITHUB_REF is provided in the action
           # See: https://docs.github.com/en/actions/learn-github-actions/environment-variables
-          git diff $GITHUB_SHA -- src/package.json
+          git diff $GITHUB_REF -- src/package.json
 
           # We need to set the diff as an output of this step to use it in the
           # next step where we comment on our PR

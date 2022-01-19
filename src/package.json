@@ -10,6 +10,7 @@
   "author": "Dallas Slaughter",
   "license": "ISC",
   "dependencies": {
+    "is-odd": "^3.0.1",
     "true": "^0.0.4"
   },
   "devDependencies": {
