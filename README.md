@@ -27,6 +27,7 @@ This branch - `talk/gha-2-pull-request-metadata` - shows how you could add infor
   * This will run the workflow when a pull request is opened (`opened`) or has commits added (`synchronize`)
   * This will also _only run_ when `src/package.json` is changed 
 * If `src/package.json` is changed, the workflow runs - it checks out the repo, gets the diff of the change to the file, and comments on the PR with those changes.
+    * The action won't actually post the diff in the comment, as there is some issue running `git diff` in the runner. But that's OK, the comment is made and the code owner is notified!
   * It is _magnificent_
 
 ## Deploying
