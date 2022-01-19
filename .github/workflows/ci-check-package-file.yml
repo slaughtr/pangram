@@ -1,0 +1,78 @@
+name: Check package.json on PR Open/Updated
+
+# Triggers on a PR open or when commit(s) add(ed)
+on:
+  pull_request:
+    types: [synchronize, opened]
+    paths:
+      # YAML arrays can be in brackets []
+      # They can also be sub-items with hyphens - 
+      - 'src/package.json'
+
+jobs:
+  run-tests:
+    # Windows and macos are also options, as well as self-hosted runners
+    # Generally, ubuntu-latest is what you want to use
+    runs-on: ubuntu-latest
+    steps:
+      # Workflows need to checkout the repo before they can work with it
+      # You can specify the repo to be checked out to pull in other code
+      # If you do not specify, the default is the repo the workflow runs from
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Get git diff
+        # To reference our output later, we need an id value
+        #
+        # This is optional in most cases, only needed to reference a step
+        id: diff
+        # Multi-line run steps use the pipe | as the first line
+        run: |
+          # This script is going to use some bash scripting
+          # If you don't understand, that's fine! I'll try to make it 
+          # clear what's going on through comments
+
+          # First, we need to get our git diff - GITHUB_SHA is provided in the action
+          # See: https://docs.github.com/en/actions/learn-github-actions/environment-variables
+          git diff $GITHUB_SHA -- src/package.json
+
+          # We need to set the diff as an output of this step to use it in the
+          # next step where we comment on our PR
+          # We can do that by setting the diff as an output
+          # See: https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs
+          # $(cmd) substitutes the result of cmd as a string - in this case,
+          # it would set our output for this step as the text from git diff
+          echo "::set-output name=GIT_DIFF::$(git diff $GITHUB_SHA -- src/package.json)"
+          
+          # Another way to do it is set the value as an environment variable
+          # echo "GIT_DIFF=$(git diff src/package.json)" >> $GITHUB_ENV
+          
+      - name: Comment on PR
+        # github-script is an amazingly powerful action, check it out!
+        # https://github.com/actions/github-script
+        uses: actions/github-script@v3
+        env:
+          # We can set environment variables for a step using env
+          # Here we're setting it to the output we made
+          GIT_DIFF: ${{ steps.diff.outputs.GIT_DIFF }}
+        with:
+          # There's our multi-line pipe again
+          script: |
+            // Here, we're using Javascript - neato!
+            
+            // Get our env var we set above
+            const { GIT_DIFF } = process.env
+
+            // Pull requests are issues, as far as Github's APIs are concerned
+            github.issues.createComment({
+              // context here comes from the action itself, see:
+              // https://docs.github.com/en/actions/learn-github-actions/contexts
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `⚠️ package.json changed! ⚠️
+                    The package.json file was changed! @slaughtr please verify changes are acceptable!
+                    Changes:
+                    ${GIT_DIFF}
+                    `
+            })
