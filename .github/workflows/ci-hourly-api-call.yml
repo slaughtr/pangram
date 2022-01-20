@@ -1,11 +1,11 @@
-name: Check package.json on PR Open/Updated
+name: Call API Hourly
 
-# Triggers on a PR open or when commit(s) add(ed)
 on:
   schedule:
     # Cron syntax is strange, but don't worry! It's very simple to use
     # A great reference and checker is https://crontab.guru/
-    - cron: 0 * * * *
+    # This won't run til 2023
+    - cron: 1 1 1 1 1
 
 jobs:
   ping-api:
@@ -18,13 +18,13 @@ jobs:
         env:
           # Normally we wouldn't want a constant value here
           # For the purposes of this exercise, though, it's acceptable
-          API_URL: 'https://rgt26hbfag.execute-api.us-west-2.amazonaws.com/v0/pangram?string=abcdefghijklmnopqrstuvwxyz'
+          API_URL: 'https://yourapiurlthi.ng'
         # We'll keep it simple and use curl, a basic unix utility
         run: curl $API_URL
 
       - name: Call out to API with non-pangram
         env:
-          API_URL: 'https://rgt26hbfag.execute-api.us-west-2.amazonaws.com/v0/pangram?string=abcd'
+          API_URL: 'https://yourapiurlthi.ng'
         run: curl $API_URL
         
     # What else might we do here? 
